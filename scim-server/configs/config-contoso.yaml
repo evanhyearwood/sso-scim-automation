@@ -1,8 +1,0 @@
-# Contoso HR Portal — SCIM Service Provider
-# Users only, no group provisioning
-
-app_name: "Contoso HR Portal"
-port: 5010
-bearer_token: "contoso-scim-token-change-me"
-groups_enabled: false
-database: "contoso.db"

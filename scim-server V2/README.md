@@ -2,7 +2,7 @@
 
 A lightweight, config-driven SCIM 2.0 server for Entra ID provisioning labs. One codebase runs as multiple mock SaaS applications, each with its own configuration, database, and dashboard.
 
-Developed for **SCIP** (Skills, Coaching, Identity, Purpose) by **Evan H. Yearwood**.
+Developed with **Claude.ai** by **Evan H. Yearwood**.
 
 ---
 

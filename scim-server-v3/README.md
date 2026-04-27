@@ -38,7 +38,7 @@ Three mock SaaS applications, each simulating a different customer onboarding sc
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/EvanHYearwood/SSO-SCIM-Automation.git
+git clone https://github.com/ADD-YOUR-USERNAME-HERE/SSO-SCIM-Automation.git
 cd SSO-SCIM-Automation/scim-server
 pip install -r requirements.txt
 ```

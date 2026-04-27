@@ -1,0 +1,8 @@
+# Woodgrove Ticketing — SCIM Service Provider
+# Users only, no group provisioning
+
+app_name: "Woodgrove Ticketing"
+port: 5012
+bearer_token: "woodgrove-scim-token-change-me"
+groups_enabled: false
+database: "woodgrove.db"

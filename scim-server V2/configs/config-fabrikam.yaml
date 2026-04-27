@@ -1,0 +1,8 @@
+# Fabrikam Wiki — SCIM Service Provider
+# Users and group provisioning enabled
+
+app_name: "Fabrikam Wiki"
+port: 5011
+bearer_token: "fabrikam-scim-token-change-me"
+groups_enabled: true
+database: "fabrikam.db"

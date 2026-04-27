@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }} — SSO Error</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f4f5f7;
+            color: #1c1c1c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .error-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 520px;
+        }
+        .error-card h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #c0392b;
+            margin-bottom: 1rem;
+        }
+        .error-detail {
+            background: #fdf2f2;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            color: #721c24;
+            margin-bottom: 1.5rem;
+            word-break: break-word;
+        }
+        .links a {
+            color: #1b4f72;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-right: 1rem;
+        }
+        .links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <h1>{{ error }}</h1>
+        <div class="error-detail">{{ detail }}</div>
+        <div class="links">
+            <a href="/login">Try again</a>
+            <a href="/dashboard">Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

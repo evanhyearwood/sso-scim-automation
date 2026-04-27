@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }} — Sign In</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f4f5f7;
+            color: #1c1c1c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+        .login-card h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1b4f72;
+            margin-bottom: 0.5rem;
+        }
+        .login-card .subtitle {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+        .sso-btn {
+            display: block;
+            width: 100%;
+            padding: 0.85rem;
+            background: #1b4f72;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            transition: background 0.2s;
+        }
+        .sso-btn:hover { background: #154360; }
+        .protocol-badge {
+            display: inline-block;
+            background: #d6eaf8;
+            color: #1b4f72;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .links {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+        }
+        .links a {
+            color: #1b4f72;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+        .links a:hover { text-decoration: underline; }
+        .no-sso {
+            color: #999;
+            font-size: 0.85rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>{{ app_name }}</h1>
+        <p class="subtitle">Service Provider Login</p>
+        <span class="protocol-badge">{{ protocol }} SSO</span>
+
+        {% if login_url %}
+            <a href="{{ login_url }}" class="sso-btn">Sign in with Microsoft Entra ID</a>
+        {% else %}
+            <p class="no-sso">SSO is not configured. Update your config file with the appropriate SSO settings.</p>
+        {% endif %}
+
+        <div class="links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/">Health Check</a>
+        </div>
+    </div>
+</body>
+</html>

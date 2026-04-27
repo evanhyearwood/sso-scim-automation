@@ -1,0 +1,15 @@
+# Contoso HR Portal — SCIM + SAML Service Provider
+# Users only, no group provisioning, SAML SSO
+
+app_name: "Contoso HR Portal"
+port: 5010
+bearer_token: "contoso-scim-token-change-me"
+groups_enabled: false
+database: "contoso.db"
+
+# SSO Configuration
+sso_protocol: "saml"
+saml_entity_id: "http://localhost:5010/saml/metadata"
+saml_acs_url: "http://localhost:5010/saml/acs"
+# Download Entra Federation Metadata XML and save to this path
+saml_idp_metadata: "metadata/contoso-idp-metadata.xml"

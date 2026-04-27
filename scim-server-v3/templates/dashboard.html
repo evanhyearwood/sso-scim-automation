@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }} — SCIM Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f4f5f7;
+            color: #1c1c1c;
+            padding: 2rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #1b4f72;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1b4f72;
+        }
+        .header .meta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            min-width: 140px;
+        }
+        .stat-card .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888;
+            margin-bottom: 0.25rem;
+        }
+        .stat-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1b4f72;
+        }
+        .section { margin-bottom: 2rem; }
+        .section h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.75rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th {
+            background: #1b4f72;
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.65rem 0.75rem;
+            text-align: left;
+        }
+        td {
+            padding: 0.6rem 0.75rem;
+            font-size: 0.85rem;
+            border-top: 1px solid #eee;
+            vertical-align: top;
+        }
+        tr:hover td { background: #f8f9fa; }
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-disabled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .badge-create {
+            background: #cce5ff;
+            color: #004085;
+        }
+        .badge-update {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .badge-delete {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .badge-query {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        .mono {
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.78rem;
+            color: #555;
+        }
+        .empty {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+            font-style: italic;
+        }
+        .refresh-bar {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+        .refresh-bar a {
+            font-size: 0.85rem;
+            color: #1b4f72;
+            text-decoration: none;
+        }
+        .refresh-bar a:hover { text-decoration: underline; }
+        .group-members {
+            margin-top: 0.25rem;
+            font-size: 0.78rem;
+            color: #666;
+        }
+        .member-badge {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            margin: 0.1rem 0.15rem;
+            font-size: 0.72rem;
+        }
+        .member-badge.inactive {
+            background: #f8d7da;
+            color: #721c24;
+            text-decoration: line-through;
+        }
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+            font-size: 0.75rem;
+            color: #999;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ app_name }} — SCIM Dashboard</h1>
+        <span class="meta">SCIM 2.0 Service Provider</span>
+    </div>
+
+    <div class="refresh-bar">
+        <a href="/dashboard">Refresh</a>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="label">Total Users</div>
+            <div class="value">{{ users|length }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Active</div>
+            <div class="value">{{ users|selectattr('active')|list|length }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Disabled</div>
+            <div class="value">{{ users|rejectattr('active')|list|length }}</div>
+        </div>
+        {% if groups_enabled %}
+        <div class="stat-card">
+            <div class="label">Groups</div>
+            <div class="value">{{ groups|length }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Provisioned Users</h2>
+        {% if users %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Display Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>SCIM ID</th>
+                    <th>Last Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td><strong>{{ user.user_name }}</strong></td>
+                    <td>{{ user.display_name or '—' }}</td>
+                    <td>{{ user.email or '—' }}</td>
+                    <td>{{ user.department or '—' }}</td>
+                    <td>{{ user.title or '—' }}</td>
+                    <td>
+                        {% if user.active %}
+                            <span class="badge badge-active">Active</span>
+                        {% else %}
+                            <span class="badge badge-disabled">Disabled</span>
+                        {% endif %}
+                    </td>
+                    <td class="mono">{{ user.id[:12] }}…</td>
+                    <td class="mono">{{ user.updated_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">No users provisioned yet. Assign users in Entra and run provisioning.</div>
+        {% endif %}
+    </div>
+
+    {% if groups_enabled %}
+    <div class="section">
+        <h2>Provisioned Groups</h2>
+        {% if groups %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+                    <th>Members</th>
+                    <th>SCIM ID</th>
+                    <th>Last Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups %}
+                <tr>
+                    <td><strong>{{ group.display_name }}</strong></td>
+                    <td>
+                        {% set members = memberships.get(group.id, []) %}
+                        {% if members %}
+                            {% for m in members %}
+                                <span class="member-badge {% if not m.active %}inactive{% endif %}">
+                                    {{ m.user_name }}
+                                </span>
+                            {% endfor %}
+                        {% else %}
+                            <span style="color:#999; font-size:0.78rem;">No members</span>
+                        {% endif %}
+                    </td>
+                    <td class="mono">{{ group.id[:12] }}…</td>
+                    <td class="mono">{{ group.updated_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">No groups provisioned yet.</div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <h2>Activity Log</h2>
+        <p style="font-size:0.78rem; color:#888; margin-bottom:0.5rem;">Last 50 SCIM operations — most recent first</p>
+        {% if activity %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Action</th>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in activity %}
+                <tr>
+                    <td class="mono">{{ log.timestamp }}</td>
+                    <td>
+                        {% if 'Create' in log.action %}
+                            <span class="badge badge-create">{{ log.action }}</span>
+                        {% elif 'Disable' in log.action %}
+                            <span class="badge badge-disabled">{{ log.action }}</span>
+                        {% elif 'Enable' in log.action %}
+                            <span class="badge badge-active">{{ log.action }}</span>
+                        {% elif 'Update' in log.action %}
+                            <span class="badge badge-update">{{ log.action }}</span>
+                        {% elif 'Delete' in log.action %}
+                            <span class="badge badge-delete">{{ log.action }}</span>
+                        {% elif 'Query' in log.action %}
+                            <span class="badge badge-query">{{ log.action }}</span>
+                        {% else %}
+                            {{ log.action or '—' }}
+                        {% endif %}
+                    </td>
+                    <td class="mono">{{ log.method }}</td>
+                    <td class="mono" style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ log.endpoint }}</td>
+                    <td>{{ log.target or '—' }}</td>
+                    <td>
+                        {% if log.status_code < 300 %}
+                            <span class="badge badge-active">{{ log.status_code }}</span>
+                        {% elif log.status_code < 400 %}
+                            <span class="badge badge-update">{{ log.status_code }}</span>
+                        {% else %}
+                            <span class="badge badge-disabled">{{ log.status_code }}</span>
+                        {% endif %}
+                    </td>
+                    <td style="font-size:0.78rem; color:#666; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ log.detail or '—' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">No activity yet. SCIM operations will appear here as they occur.</div>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        SCIP — Skills, Coaching, Identity, Purpose &middot; Developed by Evan H. Yearwood
+    </div>
+</body>
+</html>

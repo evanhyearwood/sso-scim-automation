@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }} — Authenticated</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f4f5f7;
+            color: #1c1c1c;
+            padding: 2rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #27ae60;
+        }
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #27ae60;
+        }
+        .header .protocol-badge {
+            background: #d5f5e3;
+            color: #1e8449;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .success-banner {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .success-banner .check {
+            font-size: 1.5rem;
+            color: #27ae60;
+        }
+        .success-banner .text h3 {
+            font-size: 0.95rem;
+            color: #155724;
+        }
+        .success-banner .text p {
+            font-size: 0.8rem;
+            color: #155724;
+        }
+        .card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #888;
+            padding: 0.4rem 0.75rem;
+            background: #f8f9fa;
+        }
+        td {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        td.label {
+            font-weight: 600;
+            color: #555;
+            width: 200px;
+        }
+        td.value {
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: #1c1c1c;
+            word-break: break-all;
+        }
+        .raw-toggle {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+        }
+        .raw-toggle summary {
+            cursor: pointer;
+            color: #1b4f72;
+            font-weight: 600;
+        }
+        .raw-content {
+            margin-top: 0.5rem;
+            background: #1c1c1c;
+            color: #a8d8a8;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.72rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .links {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+        }
+        .links a {
+            color: #1b4f72;
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+        .links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ app_name }} — Authentication Successful</h1>
+        <span class="protocol-badge">{{ protocol }}</span>
+    </div>
+
+    <div class="success-banner">
+        <span class="check">&#10003;</span>
+        <div class="text">
+            <h3>SSO Login Verified</h3>
+            <p>The identity provider returned a valid {{ protocol }} response for {{ name_id }}</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Identity Summary</h2>
+        <table>
+            <tr><td class="label">Name ID / Subject</td><td class="value">{{ name_id }}</td></tr>
+            <tr><td class="label">Name ID Format</td><td class="value">{{ name_id_format }}</td></tr>
+            <tr><td class="label">Issuer</td><td class="value">{{ issuer }}</td></tr>
+            <tr><td class="label">Audience</td><td class="value">{{ audience }}</td></tr>
+            <tr><td class="label">Status</td><td class="value">{{ status }}</td></tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Claims / Attributes</h2>
+        {% if attributes %}
+        <table>
+            <thead>
+                <tr><th>Attribute Name</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+                {% for key, value in attributes.items() %}
+                <tr>
+                    <td class="label">{{ key }}</td>
+                    <td class="value">
+                        {% if value is iterable and value is not string %}
+                            {% for v in value %}{{ v }}{% if not loop.last %}, {% endif %}{% endfor %}
+                        {% else %}
+                            {{ value }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="color:#999; font-size:0.85rem;">No attributes received.</p>
+        {% endif %}
+    </div>
+
+    <details class="raw-toggle">
+        <summary>View raw {{ protocol }} response</summary>
+        <div class="raw-content">{{ raw_xml }}</div>
+    </details>
+
+    <div class="links">
+        <a href="/login">Sign in again</a>
+        <a href="/dashboard">Dashboard</a>
+    </div>
+</body>
+</html>

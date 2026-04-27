@@ -1,0 +1,15 @@
+# Fabrikam Wiki — SCIM + SAML Service Provider
+# Users and group provisioning enabled, SAML SSO
+
+app_name: "Fabrikam Wiki"
+port: 5011
+bearer_token: "fabrikam-scim-token-change-me"
+groups_enabled: true
+database: "fabrikam.db"
+
+# SSO Configuration
+sso_protocol: "saml"
+saml_entity_id: "http://localhost:5011/saml/metadata"
+saml_acs_url: "http://localhost:5011/saml/acs"
+# Download Entra Federation Metadata XML and save to this path
+saml_idp_metadata: "metadata/fabrikam-idp-metadata.xml"

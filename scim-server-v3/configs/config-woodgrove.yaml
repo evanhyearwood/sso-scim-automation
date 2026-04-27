@@ -1,0 +1,17 @@
+# Woodgrove Ticketing — SCIM + OIDC Service Provider
+# Users only, no group provisioning, OIDC SSO
+
+app_name: "Woodgrove Ticketing"
+port: 5012
+bearer_token: "woodgrove-scim-token-change-me"
+groups_enabled: false
+database: "woodgrove.db"
+
+# SSO Configuration
+sso_protocol: "oidc"
+# Fill these in after creating the App Registration in Entra:
+oidc_client_id: "YOUR-APP-CLIENT-ID"
+oidc_tenant_id: "YOUR-TENANT-ID"
+oidc_redirect_uri: "http://localhost:5012/auth/callback"
+# Leave empty for PKCE public client (no secret)
+oidc_client_secret: ""

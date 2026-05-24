@@ -50,6 +50,24 @@ Active Directory is the **source of truth for identity**. Entra ID is the **clou
 
 This is not a build-and-screenshot lab. Each pipeline stage is intentionally broken, diagnosed using production tools (sign-in logs, audit logs, provisioning logs), classified by root cause type (Process, Automation, or Detection gap), and documented with the prevention fix. The deliverables are operational runbooks and troubleshooting guides, not just configuration walkthroughs.
 
+### Skills Demonstrated
+
+- **User Provisioning and Deprovisioning:** Automated full identity lifecycle (Joiners, Movers, Leavers) across hybrid AD and Entra ID environment
+- **SCIM Provisioning:** Configured attribute mapping, transformation rules, and downstream app provisioning with failure diagnosis and recovery
+- **Dynamic Group Administration:** Built rules-based group membership tied to HR attributes, troubleshot evaluation failures and attribute mismatches
+- **Group-Based Licensing:** Configured automatic license assignment through group membership, diagnosed silent assignment failures
+- **Entra Connect Sync:** Managed hybrid sync between on-prem AD and cloud Entra ID, monitored health dashboard, resolved sync conflicts
+- **Conditional Access Policy Design:** Built and documented production-realistic policy suite with business justification, diagnosed policy interaction conflicts
+- **MFA Enrollment and Enforcement:** Configured MFA requirements through Conditional Access, troubleshot enrollment failures and authentication loops
+- **Lifecycle Workflows (Entra ID Governance):** Automated onboarding and offboarding actions triggered by HR attributes with execution logging
+- **SSO Configuration (SAML 2.0):** Maintained SAML-based SSO integrations with Flask service providers via Okta
+- **PowerShell Scripting and Automation:** Built CSV-driven provisioning pipeline with continue-on-failure execution, certificate-based API authentication, and compliance reporting scripts
+- **Microsoft Graph API:** Queried user objects, group memberships, sign-in logs, and audit logs programmatically for compliance detection
+- **Sign-In, Audit, and Provisioning Log Analysis:** Diagnosed access failures across Identity, Policy, and Application layers using native Entra logs
+- **Compliance Evidence Collection:** Produced system-generated audit artifacts for access reviews, provisioning events, and offboarding SLA verification
+- **Incident Documentation:** Classified 13 failure scenarios by root cause type (Process, Automation, Detection) with structured incident reports
+- **Runbook and Process Documentation:** Created operational runbooks covering happy path procedures, failure modes, and escalation criteria
+
 ---
 
 ## Environment

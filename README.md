@@ -1,4 +1,4 @@
-# JML SCIM Pipeline W/ Failure Recovery
+# NOT FINISHED - JML SCIM Pipeline W/ Failure Recovery
 **Yearwood.Local | Active Directory + Entra ID + Okta | PowerShell | SCIM | Entra ID Governance**
 
 Hi,
